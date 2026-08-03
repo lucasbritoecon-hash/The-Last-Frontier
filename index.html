@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">A Última Fronteira da Independência do Banco Central — Lucas Brito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+<style>
+  :root{
+    --bg: #0C0A14;
+    --bg-elev: #161228;
+    --bg-elev-2: #1E1834;
+    --border: #2A2444;
+    --purple: #9B87F5;
+    --purple-soft: rgba(155,135,245,0.14);
+    --blue: #6FD3FF;
+    --blue-soft: rgba(111,211,255,0.12);
+    --green: #7ED9A8;
+    --amber: #F5A623;
+    --amber-soft: rgba(245,166,35,0.12);
+    --white: #F4F2FA;
+    --muted: #8A82A6;
+    --muted-2: #5D5578;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(155,135,245,0.10), transparent 60%),
+      radial-gradient(1000px 500px at 100% 6%, rgba(111,211,255,0.07), transparent 55%),
+      var(--bg);
+    color: var(--white);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; scroll-behavior:auto !important; } }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top:0; z-index:10;
+    background: rgba(12,10,20,0.85);
+    backdrop-filter: blur(10px);
+    flex-wrap: wrap; gap:12px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{
+    width:34px; height:34px; border-radius:9px;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:15px; color:#0C0A14;
+  }
+  .brand-text h1{ font-family:'Space Grotesk', sans-serif; font-size:16px; margin:0; font-weight:600; }
+  .brand-text span{ font-size:11.5px; color: var(--muted); }
+  header a.cta-mini{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--white);
+    text-decoration:none; border:1px solid var(--border); padding:8px 14px; border-radius:8px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  header a.cta-mini:hover{ border-color: var(--purple); color: var(--purple); }
+  .header-actions{ display:flex; align-items:center; gap:10px; }
+  #langToggle{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--white);
+    background: var(--bg-elev-2); border:1px solid var(--border); padding:8px 12px; border-radius:8px;
+    cursor:pointer; display:flex; align-items:center; gap:6px; transition: border-color .15s ease, color .15s ease;
+  }
+  #langToggle:hover{ border-color: var(--blue); color: var(--blue); }
+  #langToggle .lang-flag{ font-size:13px; line-height:1; }
+  @media (max-width: 720px){
+    .header-actions{ gap:6px; }
+  }
+
+  main{ max-width: 880px; margin: 0 auto; padding: 0 40px; }
+
+  /* HERO */
+  .hero{ padding: 76px 0 56px; border-bottom: 1px solid var(--border); }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.06em;
+    color: var(--blue); text-transform:uppercase; margin-bottom:22px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--blue); box-shadow:0 0 0 0 rgba(111,211,255,.6); animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%{box-shadow:0 0 0 0 rgba(111,211,255,.45);} 70%{box-shadow:0 0 0 7px rgba(111,211,255,0);} 100%{box-shadow:0 0 0 0 rgba(111,211,255,0);} }
+  h2.headline{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:44px; line-height:1.12;
+    margin:0 0 22px; letter-spacing:-0.01em;
+  }
+  h2.headline .accent{
+    background: linear-gradient(90deg, var(--purple), var(--blue));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .dek{ font-size:17px; line-height:1.65; color: var(--white); opacity:0.88; max-width:640px; margin:0 0 30px; }
+  .byline-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:34px; }
+  .byline{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--white); }
+  .byline b{ color: var(--white); }
+  .read-time{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--white); border-left:1px solid var(--border); padding-left:14px; }
+  .hero-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn-primary{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
+    background: linear-gradient(135deg, var(--purple), var(--blue)); color:#0C0A14;
+    padding:13px 22px; border-radius:10px; text-decoration:none; display:inline-block;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 8px 24px rgba(155,135,245,0.25); }
+  .btn-ghost{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px;
+    color: var(--white); border:1px solid var(--border); padding:13px 22px; border-radius:10px;
+    text-decoration:none; display:inline-block; transition: border-color .15s ease;
+  }
+  .btn-ghost:hover{ border-color: var(--purple); }
+
+  /* SECTION LABELS */
+  .section{ padding: 56px 0; border-bottom: 1px solid var(--border); }
+  .section:last-of-type{ border-bottom:none; }
+  .section-label{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.08em;
+    text-transform:uppercase; color: var(--white); margin:0 0 8px;
+  }
+  .section-label.label-blue{ color: var(--blue); }
+  .section-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:28px; margin:0 0 34px; }
+
+  /* TAKEAWAYS */
+  .takeaways{ display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
+  .tk-card{
+    background: linear-gradient(180deg, var(--bg-elev), rgba(22,18,40,0.6));
+    border:1px solid var(--border); border-radius:14px; padding:20px 22px;
+  }
+  .tk-card .tk-num{ font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--purple); margin-bottom:10px; display:block; }
+  .tk-card p{ margin:0; font-size:14px; line-height:1.6; color: var(--white); opacity:0.92; }
+
+  /* TIMELINE — signature element */
+  .timeline{ position:relative; margin-top:10px; }
+  .timeline::before{
+    content:''; position:absolute; left:15px; top:6px; bottom:6px; width:2px;
+    background: linear-gradient(180deg, var(--purple), var(--blue), var(--border));
+  }
+  .tl-item{ position:relative; padding:0 0 34px 46px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-dot{
+    position:absolute; left:6px; top:2px; width:20px; height:20px; border-radius:50%;
+    background: var(--bg-elev-2); border:2px solid var(--purple);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .tl-dot.open .tl-inner{ background: var(--amber); }
+  .tl-inner{ width:8px; height:8px; border-radius:50%; background: var(--purple); }
+  .tl-year{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--blue); margin-bottom:5px; }
+  .tl-title{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:16px; margin:0 0 6px; }
+  .tl-desc{ font-size:13.5px; line-height:1.6; color: var(--white); margin:0; max-width:560px; }
+  .tl-badge{
+    display:inline-block; margin-top:8px; font-size:10.5px; color: var(--amber);
+    background: var(--amber-soft); border:1px solid rgba(245,166,35,0.3);
+    padding:2px 9px; border-radius:6px; font-family:'JetBrains Mono', monospace;
+  }
+
+  /* CRITICISM GRID */
+  .crit-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
+  .crit-card{ background: var(--bg-elev); border:1px solid var(--border); border-radius:14px; padding:22px; }
+  .crit-tag{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase;
+    color: var(--blue); background: var(--blue-soft); display:inline-block; padding:3px 9px; border-radius:6px; margin-bottom:12px;
+  }
+  .crit-card h4{ font-family:'Space Grotesk', sans-serif; font-size:15px; margin:0 0 8px; font-weight:600; }
+  .crit-card p{ font-size:13.5px; line-height:1.6; color: var(--muted); margin:0; }
+
+  /* CHART */
+  .chart-card{
+    background: linear-gradient(180deg, var(--bg-elev), rgba(22,18,40,0.6));
+    border:1px solid var(--border); border-radius:16px; padding:24px 26px 20px;
+  }
+  .chart-legend{ display:flex; gap:20px; flex-wrap:wrap; margin-bottom:14px; }
+  .chart-legend .li{ display:flex; align-items:center; gap:7px; font-size:12px; color: var(--white); }
+  .chart-legend .li i{ width:14px; height:2px; display:inline-block; }
+  .chart-legend .li i.dash{ background: repeating-linear-gradient(90deg, var(--purple) 0 5px, transparent 5px 8px); }
+  .chart-legend .li i.solid{ background: var(--blue); height:2px; }
+  .chart-legend .li i.box{ width:12px; height:12px; background: var(--amber-soft); border:1px solid rgba(245,166,35,0.4); }
+  .chart-wrap{ position:relative; height:380px; }
+  .chart-note{
+    margin-top:16px; padding-top:14px; border-top:1px solid var(--border);
+    font-size:11.5px; color: var(--white); line-height:1.6;
+  }
+  .pres-table-wrap{ margin-top:18px; overflow-x:auto; border:1px solid var(--border); border-radius:12px; }
+  .pres-table{ width:100%; border-collapse:collapse; font-size:12px; white-space:nowrap; }
+  .pres-table th, .pres-table td{ padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); }
+  .pres-table thead th{ color:var(--white); font-family:'JetBrains Mono', monospace; font-weight:500; font-size:10.5px; text-transform:uppercase; }
+  .pres-table td.per{ font-family:'JetBrains Mono', monospace; color: var(--blue); }
+  .pres-table tbody tr:hover td{ background: var(--bg-elev-2); }
+  .pres-table td.ctx{ color: var(--white); font-size:11.5px; white-space:normal; }
+  .toggle-table{
+    margin-top:14px; background:none; border:1px solid var(--border); color: var(--white);
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; padding:8px 14px; border-radius:8px;
+    cursor:pointer; transition: border-color .15s ease;
+  }
+  .toggle-table:hover{ border-color: var(--purple); }
+
+  /* UNIT TOGGLE (R$ / %) — mesmo padrao do Painel Macro CIEM */
+  .chart-head{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .toggle-group{ display:flex; background: var(--bg-elev-2); border:1px solid var(--border); border-radius:9px; padding:3px; gap:2px; }
+  .toggle-group button{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--muted); background:none; border:none;
+    padding:6px 12px; border-radius:7px; cursor:pointer; transition: color .15s ease, background .15s ease;
+  }
+  .toggle-group button.on{ background: linear-gradient(135deg, var(--purple), var(--blue)); color:#0C0A14; font-weight:600; }
+
+  /* AVISO DE DADOS AUSENTES */
+  .data-warn{
+    display:none; align-items:center; gap:8px; margin-bottom:14px; padding:10px 14px;
+    background: var(--amber-soft); border:1px solid rgba(245,166,35,0.3); border-radius:10px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--amber); line-height:1.5;
+  }
+  .data-warn.show{ display:flex; }
+
+  /* QUOTE */
+  .quote-block{
+    position:relative;
+    background: linear-gradient(135deg, var(--purple-soft), var(--blue-soft));
+    border:1px solid var(--border); border-radius:16px; padding:78px 38px 36px; text-align:center;
+  }
+  .quote-photo{
+    position:absolute; top:-64px; left:50%; transform:translateX(-50%);
+    width:128px; height:128px; border-radius:50%; object-fit:cover; object-position:top center;
+    margin:0; display:block; border:3px solid var(--border);
+    box-shadow:0 10px 28px rgba(0,0,0,0.4);
+  }
+  .quote-block q{
+    font-family:'Space Grotesk', sans-serif; font-size:22px; font-weight:600; line-height:1.5;
+    display:block; margin-bottom:14px; quotes:none;
+  }
+  .quote-block cite{ font-family:'JetBrains Mono', monospace; font-size:12px; color: var(--blue); font-style:normal; }
+
+  /* FINAL CTA */
+  .final-cta{ text-align:center; padding: 62px 0 70px; }
+  .final-cta h3{ font-family:'Space Grotesk', sans-serif; font-size:26px; margin:0 0 14px; }
+  .final-cta p{ font-size:14.5px; color: var(--white); max-width:480px; margin:0 auto 28px; line-height:1.6; opacity:0.92; }
+
+  footer{ text-align:center; color: var(--muted-2); font-size:12px; padding: 26px 0 40px; border-top:1px solid var(--border); }
+  footer a{ color: var(--blue); text-decoration:none; }
+
+  @media (max-width: 720px){
+    header{ padding:16px 20px; }
+    main{ padding:0 20px; }
+    .hero{ padding:48px 0 40px; }
+    h2.headline{ font-size:32px; }
+    .takeaways, .crit-grid{ grid-template-columns: 1fr; }
+    .quote-block q{ font-size:18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">L</div>
+    <div class="brand-text">
+      <h1>Lucas Brito</h1>
+      <span data-en="Macroeconomics &amp; Monetary Policy">Macroeconomia &amp; Política Monetária</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button id="langToggle" type="button" aria-label="Switch language / Mudar idioma">
+      <span class="lang-flag">🌐</span><span id="langToggleLabel">English</span>
+    </button>
+    <a class="cta-mini" href="https://marioserpa.substack.com/p/the-last-frontier-of-central-bank?utm_source=share&utm_medium=android&r=5srk1c&triedRedirect=true" target="_blank" rel="noopener" data-en="Read the full essay →">Ler o ensaio completo →</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="eyebrow" data-en="Essay — Monetary Policy &amp; Institutions"><span class="dot"></span> Ensaio — Política Monetária &amp; Instituições</div>
+    <h2 class="headline" data-en="The last &lt;span class=&quot;accent&quot;&gt;frontier&lt;/span&gt; of Central Bank independence">A última <span class="accent">fronteira</span> da independência do Banco Central</h2>
+    <p class="dek" data-en="In 2021, the Central Bank of Brazil gained operational autonomy. But can a monetary authority that still depends on the Executive branch's budget to fund itself be called fully independent? Bill PEC 65/2023 reopens this question — and the answer requires understanding what separates &quot;deciding the interest rate&quot; from &quot;having the means to sustain that decision.&quot;">Em 2021, o BACEN ganhou autonomia operacional. Mas uma autoridade monetária que ainda depende do orçamento do Executivo para se financiar pode ser chamada de plenamente independente? A PEC 65/2023 reabre essa pergunta — e a resposta passa por entender o que separa "decidir a taxa de juros" de "ter os meios para sustentar essa decisão".</p>
+    <div class="byline-row">
+      <span class="byline" data-en="By &lt;b&gt;Mario Serpa&lt;/b&gt; · Jul 31, 2026">Por <b>Mario Serpa</b> · 31 jul 2026</span>
+      <span class="read-time" data-en="≈ 9 min read">≈ 9 min de leitura</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn-primary" href="https://marioserpa.substack.com/p/the-last-frontier-of-central-bank?utm_source=share&utm_medium=android&r=5srk1c&triedRedirect=true" target="_blank" rel="noopener" id="ler-completo" data-en="Read the full essay">Ler o ensaio completo</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Why it matters">Por que isso importa</p>
+    <h3 class="section-title" data-en="Six points to understand the debate">Seis pontos para entender o debate</h3>
+    <div class="takeaways">
+      <div class="tk-card"><span class="tk-num">01</span><p data-en="The operational autonomy won in 2021 was a real institutional advance — but incomplete without financial autonomy.">A autonomia operacional conquistada em 2021 foi um avanço institucional real — mas incompleto sem autonomia financeira.</p></div>
+      <div class="tk-card"><span class="tk-num">02</span><p data-en="Bill PEC 65/2023 proposes reducing the Central Bank's dependence on the budget process led by the Executive branch.">A PEC 65/2023 propõe reduzir a dependência do BACEN em relação ao processo orçamentário conduzido pelo Executivo.</p></div>
+      <div class="tk-card"><span class="tk-num">03</span><p data-en="Financial autonomy is not the absence of control: it requires robust governance, transparency and oversight.">Autonomia financeira não é ausência de controle: exige governança, transparência e fiscalização robustas.</p></div>
+      <div class="tk-card"><span class="tk-num">04</span><p data-en="Among the world's major central banks, funding themselves with their own revenue is the rule — not the exception.">Entre os principais bancos centrais do mundo, financiar-se com receita própria é a regra — não a exceção.</p></div>
+      <div class="tk-card"><span class="tk-num">05</span><p data-en="The real debate isn't &quot;autonomy versus democratic control,&quot; but how to reconcile independence, governance and accountability.">O debate real não é "autonomia versus controle democrático", mas como conciliar independência, governança e prestação de contas.</p></div>
+      <div class="tk-card"><span class="tk-num">06</span><p data-en="The true test of an institutional design is how it holds up when incentives to interfere emerge — not how it works under good governments.">O verdadeiro teste de um desenho institucional é como ele resiste quando surgem incentivos para interferir — não como funciona sob bons governos.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Timeline">Linha do tempo</p>
+    <h3 class="section-title" data-en="An unfinished institutional journey">Uma jornada institucional inacabada</h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"><div class="tl-inner"></div></div>
+        <div class="tl-year">1964</div>
+        <div class="tl-title" data-en="Creation of the Central Bank of Brazil">Criação do Banco Central do Brasil</div>
+        <p class="tl-desc" data-en="An institutional milestone, but decades of direct subordination to the Executive, under high inflation and fiscal instability.">Marco institucional, mas décadas de subordinação direta ao Executivo, sob alta inflação e instabilidade fiscal.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><div class="tl-inner"></div></div>
+        <div class="tl-year">1999</div>
+        <div class="tl-title" data-en="Inflation-targeting regime">Regime de metas de inflação</div>
+        <p class="tl-desc" data-en="Price stability becomes the central objective. A de facto operational independence emerges — informal and vulnerable to political pressure.">Estabilidade de preços vira objetivo central. Nasce uma independência operacional de fato — informal e vulnerável a pressões políticas.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><div class="tl-inner"></div></div>
+        <div class="tl-year">2021</div>
+        <div class="tl-title" data-en="Complementary Law No. 179">Lei Complementar nº 179</div>
+        <p class="tl-desc" data-en="Fixed, staggered terms for the board, objective dismissal rules. Operational independence gains a statutory basis.">Mandatos fixos e escalonados para diretoria, regras objetivas de exoneração. Independência operacional ganha base estatutária.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot open"><div class="tl-inner"></div></div>
+        <div class="tl-year" data-en="2023 — today">2023 — hoje</div>
+        <div class="tl-title" data-en="Bill PEC No. 65/2023">PEC nº 65/2023</div>
+        <p class="tl-desc" data-en="Proposes extending independence to the Central Bank's financial and asset dimension, ending its dependence on the Executive's annual budget.">Propõe estender a independência à dimensão financeira e patrimonial do BACEN, encerrando a dependência do orçamento anual do Executivo.</p>
+        <span class="tl-badge" data-en="UNDER DEBATE IN CONGRESS">EM DEBATE NO CONGRESSO</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="The cost of institutional instability">O custo da instabilidade institucional</p>
+    <h3 class="section-title" data-en="Annual CPI (IPCA) x turnover in the Central Bank presidency">IPCA anual x rotatividade na presidência do BACEN</h3>
+    <div class="chart-card">
+      <div class="chart-legend">
+        <div class="li" data-en="&lt;i class=&quot;solid&quot;&gt;&lt;/i&gt;IPCA — annual change (%, log scale)"><i class="solid"></i>IPCA — variação anual (%, escala log)</div>
+        <div class="li" data-en="&lt;i class=&quot;box&quot;&gt;&lt;/i&gt;1985–1994: 10 presidents in 9 years"><i class="box"></i>1985–1994: 10 presidentes em 9 anos</div>
+        <div class="li" data-en="&lt;i class=&quot;box&quot; style=&quot;background:rgba(93,85,120,0.4); border-color:rgba(138,130,166,0.4)&quot;&gt;&lt;/i&gt;Inflation target and band (since 2005)"><i class="box" style="background:rgba(93,85,120,0.4); border-color:rgba(138,130,166,0.4)"></i>Meta de inflação e banda (desde 2005)</div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="ipcaPresChart"></canvas>
+      </div>
+      <div class="chart-note" data-en="&lt;b&gt;Source:&lt;/b&gt; IPCA/IBGE — the chart starts in 1980, when the series begins; there is no official IPCA for the Central Bank's first 15 years (1965–1979). Logarithmic scale due to pre-1994 hyperinflation. Central Bank presidency dates — BACEN's Gallery of Presidents and historical records, accurate to the year. Inflation target and tolerance band — CMN Resolutions, from 2005 onward (earlier years had targets revised mid-year and were left out to avoid oversimplifying that period).&lt;br&gt;Since the Central Bank was created in 1964, there have been 28 presidents/terms — ten of them between 1985 and 1994 alone (full list below). Since Complementary Law No. 179/2021, terms have become fixed, four-year terms.">
+        <b>Fonte:</b> IPCA/IBGE — o gráfico começa em 1980, quando a série tem início; não há IPCA oficial para os primeiros 15 anos do BACEN (1965–1979). Escala logarítmica devido à hiperinflação pré-1994. Datas de presidência do BACEN — Galeria dos Presidentes/BACEN e registros históricos, com precisão de ano. Meta de inflação e banda de tolerância — Resoluções CMN, a partir de 2005 (anos anteriores tiveram metas revisadas no meio do ano e foram deixados de fora para não simplificar demais esse período).<br>
+        Desde a criação do BACEN em 1964, foram 28 presidentes/mandatos — dez deles só entre 1985 e 1994 (lista completa abaixo). Desde a Lei Complementar nº 179/2021, mandatos passaram a ser fixos, de quatro anos.
+      </div>
+      <button class="toggle-table" id="togglePresTable" data-pt-label="Ver lista completa de presidentes ▾" data-en-label="See full list of presidents ▾" data-pt-label-open="Ocultar lista de presidentes ▴" data-en-label-open="Hide list of presidents ▴">Ver lista completa de presidentes ▾</button>
+      <div class="pres-table-wrap" id="presTableWrap" style="display:none">
+        <table class="pres-table" id="presTable">
+          <thead><tr><th data-en="President">Presidente</th><th data-en="Period">Período</th><th data-en="Context">Contexto</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Monetary policy instruments">Instrumentos de política monetária</p>
+    <h3 class="section-title" data-en="Inflation Control">Controle Inflacionário</h3>
+    <div class="chart-card">
+      <div class="data-warn" id="inflSelicWarn"></div>
+      <div class="chart-legend">
+        <div class="li" data-en="&lt;i class=&quot;solid&quot;&gt;&lt;/i&gt;12-month CPI (IPCA), left axis"><i class="solid"></i>IPCA acum. 12m (eixo esquerdo)</div>
+        <div class="li" data-en="&lt;i class=&quot;solid&quot; style=&quot;background:var(--purple)&quot;&gt;&lt;/i&gt;Selic target rate (right axis)"><i class="solid" style="background:var(--purple)"></i>Meta Selic (eixo direito)</div>
+        <div class="li" data-en="&lt;i class=&quot;box&quot;&gt;&lt;/i&gt;Inflation target and tolerance band (left axis)"><i class="box"></i>Meta de inflação e banda de tolerância (eixo esquerdo)</div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="inflSelicChart"></canvas>
+      </div>
+      <div class="chart-note" data-en="&lt;b&gt;Sources:&lt;/b&gt; 12-month cumulative CPI (IPCA) — SGS/BCB (series 433). Selic target rate set by Copom — SGS/BCB (series 432, daily series; the last valid value of each month is used). Inflation target and tolerance band — CMN Resolutions (center and ±1.5 p.p. since 2017; continuous-target regime from 2025 onward).">
+        <b>Fontes:</b> IPCA acumulado em 12 meses — SGS/BCB (série 433). Meta Selic definida pelo Copom — SGS/BCB (série 432,
+        série diária; usado o último valor vigente de cada mês). Meta de inflação e banda de tolerância — Resoluções CMN
+        (centro e ±1,5 p.p. desde 2017; regime de meta contínua a partir de 2025).
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Fiscal sustainability and interest rates">Sustentabilidade fiscal e juros</p>
+    <h3 class="section-title" data-en="Gross Debt x Selic">Dívida Bruta x Selic</h3>
+    <div class="chart-card">
+      <div class="data-warn" id="dividaSelicWarn"></div>
+      <div class="chart-head">
+        <div class="chart-legend" style="margin-bottom:0">
+          <div class="li" data-en="&lt;i class=&quot;solid&quot;&gt;&lt;/i&gt;General Government Gross Debt (left axis)"><i class="solid"></i>Dívida Bruta do Governo Geral (eixo esquerdo)</div>
+          <div class="li" data-en="&lt;i class=&quot;solid&quot; style=&quot;background:var(--purple)&quot;&gt;&lt;/i&gt;Selic target rate (right axis)"><i class="solid" style="background:var(--purple)"></i>Meta Selic (eixo direito)</div>
+        </div>
+        <div class="toggle-group" id="dividaUnitToggle">
+          <button data-unit="pct" class="on" data-en="% of GDP">% do PIB</button>
+          <button data-unit="brl" data-en="R$ millions">R$ milhões</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="dividaSelicChart"></canvas>
+      </div>
+      <div class="chart-note" data-en="&lt;b&gt;Sources:&lt;/b&gt; SGS/BCB. General Government Gross Debt: series 13762 (% of GDP) and series 13761 (R$ millions), monthly, last value available each month. Selic target rate set by Copom: series 432, monthly, last valid rate each month.">
+        <b>Fontes:</b> SGS/BCB. Dívida Bruta do Governo Geral: série 13762 (% do PIB) e série 13761 (R$ milhões), mensal, último
+        valor disponível de cada mês. Meta Selic definida pelo Copom: série 432, mensal, última taxa vigente de cada mês.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Credibility and anchoring of expectations">Credibilidade e ancoragem de expectativas</p>
+    <h3 class="section-title" data-en="Expectations x Selic">Expectativas x Selic</h3>
+    <div class="chart-card">
+      <div class="data-warn" id="expectativasWarn"></div>
+      <div class="chart-legend">
+        <div class="li" data-en="&lt;i class=&quot;solid&quot;&gt;&lt;/i&gt;CPI (IPCA) expectation — Focus median (left axis)"><i class="solid"></i>Expectativa IPCA — mediana Focus (eixo esquerdo)</div>
+        <div class="li" data-en="&lt;i class=&quot;solid&quot; style=&quot;background:var(--purple)&quot;&gt;&lt;/i&gt;Selic target rate (right axis)"><i class="solid" style="background:var(--purple)"></i>Meta Selic (eixo direito)</div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="expectativasChart"></canvas>
+      </div>
+      <div class="chart-note" data-en="&lt;b&gt;Sources:&lt;/b&gt; CPI (IPCA) expectation — median of the Focus Bulletin (Expectativas/BCB API), monthly: for each month, the most distant reference year available in that survey (longest horizon published at the time). Selic target rate set by Copom — SGS/BCB (series 432), last valid rate each month.">
+        <b>Fontes:</b> Expectativa IPCA — mediana do Boletim Focus (API Expectativas/BCB), mensal: para cada mês, o
+        ano de referência mais distante disponível naquela pesquisa (maior horizonte publicado no momento). Meta
+        Selic definida pelo Copom — SGS/BCB (série 432), última taxa vigente de cada mês.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label" data-en="Credibility and anchoring of expectations">Credibilidade e ancoragem de expectativas</p>
+    <h3 class="section-title" data-en="Focus expectations revisions, year by year">Revisão das expectativas Focus, ano a ano</h3>
+    <div class="chart-card">
+      <div class="data-warn" id="revisaoWarn"></div>
+      <div class="chart-wrap">
+        <canvas id="revisaoChart"></canvas>
+      </div>
+      <div class="chart-note" data-en="&lt;b&gt;Sources:&lt;/b&gt; CPI (IPCA) expectation — median of the Focus Bulletin (Expectativas/BCB API), full series of surveys for each reference year (one line per target year), showing how the market revised its projection month by month until the year closed.">
+        <b>Fontes:</b> Expectativa IPCA — mediana do Boletim Focus (API Expectativas/BCB), série completa de pesquisas
+        para cada ano de referência (uma linha por ano-alvo), mostrando como o mercado foi revisando a projeção mês a
+        mês até o ano fechar.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <p class="section-label label-blue" data-en="Where the real disagreements lie">Onde estão as divergências reais</p>
+    <h3 class="section-title" data-en="Four lines of criticism of PEC 65">Quatro frentes de crítica à PEC 65</h3>
+    <div class="crit-grid">
+      <div class="crit-card">
+        <span class="crit-tag" data-en="Legal">Jurídica</span>
+        <h4 data-en="Would the Central Bank stop being part of Public Administration?">O BACEN deixaria de ser Administração Pública?</h4>
+        <p data-en="The essay argues that special legal regimes do not imply a break with the constitutional mechanisms of control and accountability.">O ensaio argumenta que regimes jurídicos especiais não implicam ruptura com os mecanismos constitucionais de controle e prestação de contas.</p>
+      </div>
+      <div class="crit-card">
+        <span class="crit-tag" data-en="Economic-fiscal">Econômico-fiscal</span>
+        <h4 data-en="Impact on debt and Treasury revenue">Impacto sobre a dívida e a receita do Tesouro</h4>
+        <p data-en="Many estimates start from specific assumptions — such as prolonged high interest rates — and confuse an accounting change with genuine fiscal deterioration.">Muitas estimativas partem de premissas específicas — como juros elevados por tempo prolongado — e confundem mudança contábil com deterioração fiscal real.</p>
+      </div>
+      <div class="crit-card">
+        <span class="crit-tag" data-en="Methodological">Metodológica</span>
+        <h4 data-en="Automatic expansion of administrative expenses?">Expansão automática de despesas administrativas?</h4>
+        <p data-en="International experience points in the opposite direction: theoretical possibility is not the same as empirical probability.">A experiência internacional aponta na direção oposta: possibilidade teórica não equivale a probabilidade empírica.</p>
+      </div>
+      <div class="crit-card">
+        <span class="crit-tag" data-en="Seigniorage &amp; incentives">Senhoriagem &amp; incentivos</span>
+        <h4 data-en="High interest rates to boost its own revenue?">Juros altos para elevar a própria receita?</h4>
+        <p data-en="Central Bank directors are not paid based on the institution's financial performance — and the reputational cost of distorting monetary policy would outweigh any administrative gain.">Dirigentes do BACEN não são remunerados pelo desempenho financeiro da instituição — e o custo reputacional de distorcer a política monetária superaria qualquer ganho administrativo.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="quote-block">
+      <img class="quote-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Douglass_North.jpg" alt="Douglass North" loading="lazy">
+      <q data-en="Institutions are the rules of the game in a society.">Instituições são as regras do jogo em uma sociedade.</q>
+      <cite>— Douglass North</cite>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <h3 data-en="Independence requires governance, not dependence">Independência exige governança, não dependência</h3>
+    <p data-en="The full essay walks through the experience of the Fed, ECB, Bank of England and other central banks to argue that financial autonomy and accountability go hand in hand — never in conflict.">O ensaio completo percorre a experiência do Fed, BCE, Bank of England e outros bancos centrais para argumentar que autonomia financeira e prestação de contas caminham juntas — nunca em conflito.</p>
+    <a class="btn-primary" href="https://marioserpa.substack.com/p/the-last-frontier-of-central-bank?utm_source=share&utm_medium=android&r=5srk1c&triedRedirect=true" target="_blank" rel="noopener" data-en="Read the full essay →">Ler o ensaio completo →</a>
+  </section>
+
+</main>
+
+<footer data-en="Originally published by Mario Serpa · Shared by Lucas Brito">
+  Publicado originalmente por Mario Serpa · Compartilhado por Lucas Brito
+</footer>
+
+<script>
+// IPCA anual (%) — IBGE, série iniciada em 1980
+const IPCA = {
+  1980:99.28,1981:95.65,1982:104.80,1983:164.00,1984:215.28,1985:242.25,1986:79.66,1987:363.41,
+  1988:980.22,1989:1972.91,1990:1620.97,1991:472.69,1992:1119.09,1993:2477.15,1994:916.43,
+  1995:22.41,1996:9.56,1997:5.22,1998:1.66,1999:8.94,2000:5.97,2001:7.67,2002:12.53,2003:9.30,
+  2004:7.60,2005:5.69,2006:3.14,2007:4.46,2008:5.90,2009:4.31,2010:5.91,2011:6.50,2012:5.84,
+  2013:5.91,2014:6.41,2015:10.67,2016:6.29,2017:2.95,2018:3.75,2019:4.31,2020:4.52,2021:10.06,
+  2022:5.78,2023:4.62,2024:4.83,2025:4.26
+};
+
+// Presidentes do Banco Central do Brasil desde a criação (1964/1965)
+const PRESIDENTES = [
+  {nome:"Dênio Nogueira", inicio:1965, fim:1967, ctx:"1º presidente do BACEN, criado em dez/1964", ctx_en:"1st Central Bank president, created Dec/1964"},
+  {nome:"Ruy Aguiar da Silva Leme", inicio:1967, fim:1968, ctx:"Governo Costa e Silva", ctx_en:"Costa e Silva administration"},
+  {nome:"Ernane Galvêas (1º mandato)", inicio:1968, fim:1974, ctx:"Período do \"milagre econômico\"", ctx_en:"The \"economic miracle\" period"},
+  {nome:"Paulo Pereira Lira", inicio:1974, fim:1979, ctx:"Governo Geisel", ctx_en:"Geisel administration"},
+  {nome:"Carlos Brandão", inicio:1979, fim:1979, ctx:"Passagem breve, governo Figueiredo", ctx_en:"Brief tenure, Figueiredo administration"},
+  {nome:"Ernane Galvêas (2º mandato)", inicio:1979, fim:1980, ctx:"Governo Figueiredo", ctx_en:"Figueiredo administration"},
+  {nome:"Carlos Geraldo Langoni", inicio:1980, fim:1983, ctx:"Choques do petróleo e crise da dívida externa", ctx_en:"Oil shocks and foreign debt crisis"},
+  {nome:"Affonso Celso Pastore", inicio:1983, fim:1985, ctx:"Fim do regime militar", ctx_en:"End of the military regime"},
+  {nome:"Antônio Carlos Lemgruber", inicio:1985, fim:1985, ctx:"Início do governo Sarney", ctx_en:"Start of the Sarney administration"},
+  {nome:"Fernão Bracher", inicio:1985, fim:1987, ctx:"Plano Cruzado", ctx_en:"Cruzado Plan"},
+  {nome:"Francisco Gros (1º mandato)", inicio:1987, fim:1988, ctx:"Governo Sarney", ctx_en:"Sarney administration"},
+  {nome:"Elmo de Araújo Camões", inicio:1988, fim:1989, ctx:"Constituição de 1988", ctx_en:"1988 Constitution"},
+  {nome:"Wadico Waldir Bucchi", inicio:1989, fim:1990, ctx:"1º sabatinado pelo Senado", ctx_en:"1st to undergo a Senate confirmation hearing"},
+  {nome:"Ibrahim Eris", inicio:1990, fim:1991, ctx:"Plano Collor", ctx_en:"Collor Plan"},
+  {nome:"Francisco Gros (2º mandato)", inicio:1991, fim:1992, ctx:"Governo Collor", ctx_en:"Collor administration"},
+  {nome:"Gustavo Loyola (1º mandato)", inicio:1992, fim:1993, ctx:"Impeachment de Collor", ctx_en:"Collor's impeachment"},
+  {nome:"Paulo César Ximenes", inicio:1993, fim:1993, ctx:"Governo Itamar Franco", ctx_en:"Itamar Franco administration"},
+  {nome:"Pedro Malan", inicio:1993, fim:1994, ctx:"Véspera do Plano Real", ctx_en:"On the eve of the Real Plan"},
+  {nome:"Pérsio Arida", inicio:1994, fim:1995, ctx:"Implantação do Plano Real", ctx_en:"Rollout of the Real Plan"},
+  {nome:"Gustavo Loyola (2º mandato)", inicio:1995, fim:1997, ctx:"Consolidação da estabilização", ctx_en:"Consolidation of stabilization"},
+  {nome:"Gustavo Franco", inicio:1997, fim:1999, ctx:"Crises asiática e russa", ctx_en:"Asian and Russian crises"},
+  {nome:"Francisco Lopes", inicio:1999, fim:1999, ctx:"5 dias no cargo, início da crise cambial de 1999", ctx_en:"5 days in office, start of the 1999 currency crisis"},
+  {nome:"Armínio Fraga", inicio:1999, fim:2002, ctx:"Adoção do regime de metas de inflação", ctx_en:"Adoption of the inflation-targeting regime"},
+  {nome:"Henrique Meirelles", inicio:2003, fim:2011, ctx:"Governos Lula — presidente mais longevo", ctx_en:"Lula administrations — longest-serving president"},
+  {nome:"Alexandre Tombini", inicio:2011, fim:2016, ctx:"Governos Dilma", ctx_en:"Dilma administrations"},
+  {nome:"Ilan Goldfajn", inicio:2016, fim:2019, ctx:"Governo Temer", ctx_en:"Temer administration"},
+  {nome:"Roberto Campos Neto", inicio:2019, fim:2024, ctx:"1º mandato fixo sob a LC 179/2021", ctx_en:"1st fixed term under Complementary Law 179/2021"},
+  {nome:"Gabriel Galípolo", inicio:2025, fim:2026, ctx:"Presidente atual", ctx_en:"Current president"}
+];
+
+// Metas de inflação definidas pelo CMN (centro / piso / teto, em %).
+// A partir de 2005 apenas: 1999-2004 tiveram metas revisadas no meio do ano
+// ("metas ajustadas" pós-crise cambial/eleitoral), o que tornaria a banda
+// enganosa nesse trecho. 2005: 4,5%±2,5. 2006-2016: 4,5%±2. 2017-2018:
+// 4,5%±1,5. Daí em diante, centro cai até estabilizar em 3,0%±1,5 (regime de
+// meta contínua desde 2025, Decreto 12.079/2024 e Resolução CMN 5.141/2024).
+const METAS_CMN = {
+  2005: [4.50, 2.00, 7.00],
+  2006: [4.50, 2.50, 6.50], 2007: [4.50, 2.50, 6.50], 2008: [4.50, 2.50, 6.50], 2009: [4.50, 2.50, 6.50],
+  2010: [4.50, 2.50, 6.50], 2011: [4.50, 2.50, 6.50], 2012: [4.50, 2.50, 6.50], 2013: [4.50, 2.50, 6.50],
+  2014: [4.50, 2.50, 6.50], 2015: [4.50, 2.50, 6.50], 2016: [4.50, 2.50, 6.50],
+  2017: [4.50, 3.00, 6.00], 2018: [4.50, 3.00, 6.00],
+  2019: [4.25, 2.75, 5.75], 2020: [4.00, 2.50, 5.50], 2021: [3.75, 2.25, 5.25],
+  2022: [3.50, 2.00, 5.00], 2023: [3.25, 1.75, 4.75], 2024: [3.00, 1.50, 4.50],
+  2025: [3.00, 1.50, 4.50], 2026: [3.00, 1.50, 4.50], 2027: [3.00, 1.50, 4.50], 2028: [3.00, 1.50, 4.50]
+};
+function metaCmnDoAno(ano){
+  const anos = Object.keys(METAS_CMN).map(Number);
+  const clamped = Math.min(Math.max(ano, Math.min(...anos)), Math.max(...anos));
+  return METAS_CMN[clamped];
+}
+
+(function(){
+  const years = Object.keys(IPCA).map(Number);
+  const dataPoints = years.map(y => ({x:y, y:IPCA[y]}));
+
+  // banda de meta de inflação — só nos anos com meta "limpa" (ver comentário acima),
+  // mas alinhada ao mesmo array de anos do IPCA (com null fora do período) pra não
+  // desalinhar o tooltip em modo "index" do Chart.js
+  const metaTeto = years.map(y => ({x:y, y: y < 2005 ? null : metaCmnDoAno(y)[2]}));
+  const metaPiso = years.map(y => ({x:y, y: y < 2005 ? null : metaCmnDoAno(y)[1]}));
+  const metaCentro = years.map(y => ({x:y, y: y < 2005 ? null : metaCmnDoAno(y)[0]}));
+
+  // linhas verticais para cada transição de presidente (ano de início), exceto 1965 (já coberto pela linha do tempo)
+  const seen = new Set();
+  const annotations = {};
+  PRESIDENTES.forEach((p, i) => {
+    if(p.inicio < 1980) return; // fora do período coberto pela série do IPCA
+    const key = 'pres' + p.inicio + '_' + i;
+    if(seen.has(p.inicio)) return; // evita linhas duplicadas exatamente no mesmo ano
+    seen.add(p.inicio);
+    annotations[key] = {
+      type:'line', scaleID:'x', value:p.inicio,
+      borderColor:'rgba(155,135,245,0.45)', borderWidth:1, borderDash:[3,4]
+    };
+  });
+  annotations.hiperinflacao = {
+    type:'box', xMin:1985, xMax:1994, backgroundColor:'rgba(245,166,35,0.06)',
+    borderColor:'rgba(245,166,35,0.25)', borderWidth:1
+  };
+  annotations.planoReal = {
+    type:'line', scaleID:'x', value:1994, borderColor:'#F4F2FA', borderWidth:1.5,
+    label:{ display:true, content:'Plano Real', position:'end', backgroundColor:'rgba(244,242,250,0.15)',
+      color:'#F4F2FA', font:{family:'JetBrains Mono', size:10}, padding:4, yAdjust:6 }
+  };
+  annotations.lc179 = {
+    type:'line', scaleID:'x', value:2021, borderColor:'#9B87F5', borderWidth:1.5,
+    label:{ display:true, content:'LC 179 — autonomia', position:'start', backgroundColor:'rgba(155,135,245,0.15)',
+      color:'#9B87F5', font:{family:'JetBrains Mono', size:10}, padding:4, yAdjust:-6 }
+  };
+
+  const ctx = document.getElementById('ipcaPresChart').getContext('2d');
+  window.__ipcaPresChart = new Chart(ctx, {
+    type:'line',
+    data:{ datasets:[
+      { label:'Teto da meta', data:metaTeto, borderColor:'transparent', backgroundColor:'rgba(93,85,120,0.28)',
+        fill:'+1', pointRadius:0, tension:0, order:3 },
+      { label:'Piso da meta', data:metaPiso, borderColor:'transparent', backgroundColor:'rgba(93,85,120,0.28)',
+        fill:false, pointRadius:0, tension:0, order:3 },
+      { label:'Centro da meta', data:metaCentro, borderColor:'#8A82A6', borderDash:[4,3], borderWidth:1.3,
+        pointRadius:0, fill:false, tension:0, order:2 },
+      { label:'IPCA anual (%)',
+        data:dataPoints,
+        borderColor:'#6FD3FF',
+        backgroundColor:'rgba(111,211,255,0.08)',
+        borderWidth:2, pointRadius:0, pointHoverRadius:4,
+        tension:0.15, fill:true, order:1 }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      scales:{
+        x:{ type:'linear', min:1980, max:2026,
+          ticks:{ stepSize:5, color:'#F4F2FA', font:{family:'JetBrains Mono', size:10.5} },
+          grid:{ color:'rgba(42,36,68,0.6)' } },
+        y:{ type:'logarithmic', min:1, max:4000,
+          ticks:{ color:'#F4F2FA', font:{family:'JetBrains Mono', size:10.5},
+            callback:v => [1,10,100,1000].includes(v) ? v+'%' : (v===4000?'':null) },
+          grid:{ color:'rgba(42,36,68,0.6)' } }
+      },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'#1E1834', borderColor:'#2A2444', borderWidth:1,
+          titleColor:'#F4F2FA', bodyColor:'#F4F2FA', padding:10,
+          titleFont:{family:'Space Grotesk', size:12}, bodyFont:{family:'JetBrains Mono', size:11.5},
+          filter: (item) => item.raw && item.raw.y !== null && item.raw.y !== undefined,
+          callbacks: {
+            title: items => items[0].parsed.x,
+            label: item => {
+              const lang = window.__LANG || 'pt';
+              const label = item.dataset.label;
+              const val = item.parsed.y;
+              const localeStr = val.toLocaleString(lang === 'en' ? 'en-US' : 'pt-BR');
+              if(item.datasetIndex === 3) return (lang === 'en' ? 'CPI (IPCA): ' : 'IPCA: ') + localeStr + '%';
+              return label + ': ' + localeStr + '%';
+            },
+            afterLabel: item => {
+              if(item.datasetIndex !== 3) return '';
+              const lang = window.__LANG || 'pt';
+              const year = item.parsed.x;
+              const pres = PRESIDENTES.find(p => year >= p.inicio && year <= p.fim);
+              return pres ? (lang === 'en' ? 'President: ' : 'Presidente: ') + pres.nome : '';
+            }
+          }
+        },
+        annotation:{ annotations }
+      }
+    }
+  });
+
+  // tabela completa de presidentes
+  const tbody = document.querySelector('#presTable tbody');
+  window.renderPresTable = function(lang){
+    tbody.innerHTML = '';
+    PRESIDENTES.forEach(p => {
+      const tr = document.createElement('tr');
+      const periodo = p.inicio === p.fim ? p.inicio : (p.inicio + '–' + p.fim);
+      const ctx = lang === 'en' ? (p.ctx_en || p.ctx) : p.ctx;
+      tr.innerHTML = '<td>'+p.nome+'</td><td class="per">'+periodo+'</td><td class="ctx">'+ctx+'</td>';
+      tbody.appendChild(tr);
+    });
+  };
+  window.renderPresTable('pt');
+  document.getElementById('togglePresTable').addEventListener('click', function(){
+    const wrap = document.getElementById('presTableWrap');
+    const open = wrap.style.display !== 'none';
+    wrap.style.display = open ? 'none' : 'block';
+    const lang = window.__LANG || 'pt';
+    if(open){
+      this.textContent = this.dataset[lang === 'en' ? 'enLabel' : 'ptLabel'];
+    } else {
+      this.textContent = this.dataset[lang === 'en' ? 'enLabelOpen' : 'ptLabelOpen'];
+    }
+  });
+})();
+
+// ============================================================
+// Controle Inflacionário / Dívida Bruta / Expectativas x Selic
+// ============================================================
+(function(){
+  const COLORS = {
+    purple: '#9B87F5', purpleSoft: 'rgba(155,135,245,0.14)',
+    blue: '#6FD3FF', blueSoft: 'rgba(111,211,255,0.12)',
+    white: '#F4F2FA', grid: 'rgba(255,255,255,0.06)',
+    bandFill: 'rgba(93,85,120,0.28)', muted: '#8A82A6'
+  };
+
+  // Meta de inflação definida pelo CMN (centro / piso / teto, em %).
+  // 2006-2016: 4,5% ±2 p.p. · 2017-2018: 4,5% ±1,5 p.p. · a partir de 2019, banda
+  // sempre ±1,5 p.p. com centro decrescente até estabilizar em 3,0% (regime de
+  // meta contínua desde 2025, Decreto 12.079/2024 e Resolução CMN 5.141/2024).
+  const METAS_POR_ANO = {
+    2010: [4.50, 2.50, 6.50], 2011: [4.50, 2.50, 6.50], 2012: [4.50, 2.50, 6.50],
+    2013: [4.50, 2.50, 6.50], 2014: [4.50, 2.50, 6.50], 2015: [4.50, 2.50, 6.50],
+    2016: [4.50, 2.50, 6.50], 2017: [4.50, 3.00, 6.00], 2018: [4.50, 3.00, 6.00],
+    2019: [4.25, 2.75, 5.75], 2020: [4.00, 2.50, 5.50], 2021: [3.75, 2.25, 5.25],
+    2022: [3.50, 2.00, 5.00], 2023: [3.25, 1.75, 4.75], 2024: [3.00, 1.50, 4.50],
+    2025: [3.00, 1.50, 4.50], 2026: [3.00, 1.50, 4.50], 2027: [3.00, 1.50, 4.50],
+    2028: [3.00, 1.50, 4.50]
+  };
+  function metaDoAno(ano){
+    const anos = Object.keys(METAS_POR_ANO).map(Number);
+    const clamped = Math.min(Math.max(ano, Math.min(...anos)), Math.max(...anos));
+    return METAS_POR_ANO[clamped];
+  }
+  function bandasPorData(datasISO){
+    const centro = [], piso = [], teto = [];
+    datasISO.forEach(d => {
+      const [c, p, t] = metaDoAno(new Date(d + 'T00:00:00').getFullYear());
+      centro.push(c); piso.push(p); teto.push(t);
+    });
+    return { centro, piso, teto };
+  }
+
+  function setWarn(id, msgPt, msgEn){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(msgPt){
+      el.dataset.ptMsg = msgPt;
+      el.dataset.enMsg = msgEn || msgPt;
+      const lang = window.__LANG || 'pt';
+      el.textContent = '⚠ ' + (lang === 'en' ? el.dataset.enMsg : el.dataset.ptMsg);
+      el.classList.add('show');
+    } else {
+      el.classList.remove('show'); el.textContent = '';
+      delete el.dataset.ptMsg; delete el.dataset.enMsg;
+    }
+  }
+  window.__refreshWarnings = function(lang){
+    document.querySelectorAll('.data-warn.show').forEach(el => {
+      if(el.dataset.ptMsg) el.textContent = '⚠ ' + (lang === 'en' ? el.dataset.enMsg : el.dataset.ptMsg);
+    });
+  };
+
+  function toPoints(arr){
+    return (arr || []).map(d => {
+      const [day, month, year] = d.data.split('/');
+      return { date: new Date(`${year}-${month}-${day}T00:00:00`), value: d.valor };
+    });
+  }
+  function monthKey(d){ return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+  function yearKey(d){ return d.getFullYear(); }
+  function lastByKey(points, keyFn){
+    const map = new Map();
+    (points || []).forEach(p => {
+      const key = keyFn(p.date);
+      const cur = map.get(key);
+      if(!cur || p.date > cur.date) map.set(key, p);
+    });
+    return map;
+  }
+  function selicPorMes(datasISO, selicPoints){
+    const porMes = lastByKey(selicPoints, monthKey);
+    let ultimo = null;
+    return datasISO.map(d => {
+      const key = monthKey(new Date(d + 'T00:00:00'));
+      if(porMes.has(key)) ultimo = porMes.get(key).value;
+      return ultimo;
+    });
+  }
+  function pontosPorMes(points){
+    const porMes = lastByKey(points, monthKey);
+    const chaves = Array.from(porMes.keys()).sort();
+    return { chaves, isoDatas: chaves.map(k => k + '-01'), valores: chaves.map(k => porMes.get(k).value) };
+  }
+  function valorExatoPorMes(chavesAlvo, points){
+    const porMes = lastByKey(points, monthKey);
+    return chavesAlvo.map(k => porMes.has(k) ? porMes.get(k).value : null);
+  }
+  function dualAxisOptions(){
+    return {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1E1834', borderColor: '#2A2444', borderWidth: 1,
+          titleColor: COLORS.white, bodyColor: COLORS.white, padding: 10,
+          titleFont: { family: 'Space Grotesk', size: 12 }, bodyFont: { family: 'JetBrains Mono', size: 11.5 },
+          filter: (item) => item.raw !== null && item.raw !== undefined,
+          callbacks: { label: (ctx) => ctx.raw === null || ctx.raw === undefined ? null : `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%` }
+        }
+      }
+    };
+  }
+
+  async function getJSON(path){
+    const res = await fetch(path, { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status + ' em ' + path);
+    return res.json();
+  }
+
+  async function buildInflSelicChart(){
+    try {
+      const macro = await getJSON('./data/macro_data.json');
+      const datas = macro.series.ipca_acum12.map(p => p.data);
+      const ipca = macro.series.ipca_acum12.map(p => p.valor);
+      const selicPoints = toPoints(macro.series.selic_meta_mensal);
+      const selic = selicPorMes(datas, selicPoints);
+
+      if(datas.length === 0){
+        setWarn('inflSelicWarn', 'Sem dados em data/macro_data.json (IPCA vazio). Rode scripts/fetch_macro_selic.py — ou dispare a Action "Atualizar dados BCB" — e recarregue a página.', 'No data in data/macro_data.json (CPI empty). Run scripts/fetch_macro_selic.py — or trigger the "Atualizar dados BCB" Action — and reload the page.');
+        return;
+      }
+      if(selicPoints.length === 0){
+        setWarn('inflSelicWarn', 'Meta Selic não veio em data/macro_data.json (série 432 vazia) — o gráfico segue sem essa linha até o próximo fetch bem-sucedido.', 'The Selic target rate did not come through in data/macro_data.json (series 432 empty) — the chart continues without that line until the next successful fetch.');
+      }
+
+      const { centro, piso, teto } = bandasPorData(datas);
+
+      window.__inflSelicChart = new Chart(document.getElementById('inflSelicChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: datas,
+          datasets: [
+            { label: 'Teto da meta', data: teto, borderColor: 'transparent', backgroundColor: COLORS.bandFill,
+              fill: '+1', pointRadius: 0, tension: 0, yAxisID: 'y', order: 3 },
+            { label: 'Piso da meta', data: piso, borderColor: 'transparent', backgroundColor: COLORS.bandFill,
+              fill: false, pointRadius: 0, tension: 0, yAxisID: 'y', order: 3 },
+            { label: 'Centro da meta', data: centro, borderColor: COLORS.muted, borderDash: [4, 3],
+              borderWidth: 1.3, pointRadius: 0, fill: false, tension: 0, yAxisID: 'y', order: 2 },
+            { label: 'IPCA acum. 12m', data: ipca, borderColor: COLORS.blue, backgroundColor: COLORS.blueSoft,
+              borderWidth: 2.2, pointRadius: 0, pointHoverRadius: 4, fill: false, tension: 0.2, yAxisID: 'y', order: 1 },
+            { label: 'Meta Selic', data: selic, borderColor: COLORS.purple, backgroundColor: COLORS.purpleSoft,
+              borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: false, tension: 0.1, yAxisID: 'y1', order: 1 }
+          ]
+        },
+        options: Object.assign(dualAxisOptions(), {
+          scales: {
+            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM/yyyy' },
+              grid: { color: COLORS.grid }, ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 } } },
+            y: { position: 'left', grid: { color: COLORS.grid },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } },
+            y1: { position: 'right', grid: { drawOnChartArea: false },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } }
+          }
+        })
+      });
+    } catch(e){ console.error('[inflSelicChart]', e); setWarn('inflSelicWarn', 'Falha ao montar o gráfico: ' + e.message, 'Failed to build the chart: ' + e.message); }
+  }
+
+  let dividaChart = null;
+  const dividaSeries = { pct: null, brl: null };
+
+  function dividaDatasetsFor(unit, isoDatas, dividaMensal, selicMensal){
+    const isPct = unit === 'pct';
+    return [
+      { label: isPct ? 'Dívida Bruta do Governo Geral (% do PIB)' : 'Dívida Bruta do Governo Geral (R$ milhões)',
+        data: isoDatas.map((d, i) => ({ x: d, y: dividaMensal[i] })), borderColor: COLORS.blue, backgroundColor: COLORS.blueSoft,
+        borderWidth: 2.2, pointRadius: 0, pointHoverRadius: 4, fill: true, tension: 0.2, yAxisID: 'y', spanGaps: true },
+      { label: 'Meta Selic', data: isoDatas.map((d, i) => ({ x: d, y: selicMensal[i] })), borderColor: COLORS.purple, backgroundColor: COLORS.purpleSoft,
+        borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: false, tension: 0.1, yAxisID: 'y1', spanGaps: true }
+    ];
+  }
+
+  async function buildDividaSelicChart(){
+    try {
+      const macro = await getJSON('./data/macro_data.json');
+      const selicPoints = toPoints(macro.series.selic_meta_mensal);
+      const pctPoints = toPoints(macro.series.divida_bruta_pct);
+      const brlPoints = toPoints(macro.series.divida_bruta_brl);
+
+      const { chaves, isoDatas, valores: dividaMensalPct } = pontosPorMes(pctPoints);
+      const dividaMensalBrl = valorExatoPorMes(chaves, brlPoints);
+      const selicMensal = selicPorMes(isoDatas, selicPoints);
+
+      if(chaves.length === 0){
+        setWarn('dividaSelicWarn', 'Sem dados em data/macro_data.json (Dívida Bruta vazia). Rode scripts/fetch_macro_selic.py e recarregue a página.', 'No data in data/macro_data.json (Gross Debt empty). Run scripts/fetch_macro_selic.py and reload the page.');
+        return;
+      }
+      if(selicPoints.length === 0){
+        setWarn('dividaSelicWarn', 'Meta Selic não veio em data/macro_data.json (série 432 vazia) — o gráfico segue sem essa linha até o próximo fetch bem-sucedido.', 'The Selic target rate did not come through in data/macro_data.json (series 432 empty) — the chart continues without that line until the next successful fetch.');
+      }
+
+      dividaSeries.pct = { isoDatas, divida: dividaMensalPct, selic: selicMensal };
+      dividaSeries.brl = { isoDatas, divida: dividaMensalBrl, selic: selicMensal };
+
+      const unitDefault = 'pct';
+      dividaChart = new Chart(document.getElementById('dividaSelicChart').getContext('2d'), {
+        type: 'line',
+        data: { datasets: dividaDatasetsFor(unitDefault, isoDatas, dividaMensalPct, selicMensal) },
+        options: Object.assign(dualAxisOptions(), {
+          scales: {
+            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM/yyyy' },
+              grid: { color: COLORS.grid }, ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 } } },
+            y: { position: 'left', grid: { color: COLORS.grid },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } },
+            y1: { position: 'right', grid: { drawOnChartArea: false },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } }
+          }
+        })
+      });
+
+      document.querySelectorAll('#dividaUnitToggle button').forEach(b => b.classList.toggle('on', b.dataset.unit === unitDefault));
+
+      document.getElementById('dividaUnitToggle').addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if(!btn || !dividaChart) return;
+        const unit = btn.dataset.unit;
+        const src = dividaSeries[unit];
+
+        if(!src || !src.divida.some(v => v !== null && v !== undefined)){
+          document.querySelectorAll('#dividaUnitToggle button').forEach(b => b.classList.toggle('on', b.dataset.unit === 'pct'));
+          setWarn('dividaSelicWarn', 'Série em R$ ainda não coletada (série 13761) — rode scripts/fetch_macro_selic.py depois de incluir esse código.', 'The R$ series has not been collected yet (series 13761) — run scripts/fetch_macro_selic.py after including that code.');
+          return;
+        }
+
+        document.querySelectorAll('#dividaUnitToggle button').forEach(b => b.classList.toggle('on', b === btn));
+        const lang = window.__LANG || 'pt';
+        dividaChart.data.datasets[0].data = src.isoDatas.map((d, i) => ({ x: d, y: src.divida[i] }));
+        dividaChart.data.datasets[0].label = unit === 'pct'
+          ? (lang === 'en' ? 'General Government Gross Debt (% of GDP)' : 'Dívida Bruta do Governo Geral (% do PIB)')
+          : (lang === 'en' ? 'General Government Gross Debt (R$ millions)' : 'Dívida Bruta do Governo Geral (R$ milhões)');
+        dividaChart.data.datasets[1].data = src.isoDatas.map((d, i) => ({ x: d, y: src.selic[i] }));
+        dividaChart.options.scales.y.ticks.callback = unit === 'pct' ? (v => v + '%') : (v => v.toLocaleString(lang === 'en' ? 'en-US' : 'pt-BR'));
+        dividaChart.update();
+      });
+      window.__dividaChartRef = () => dividaChart;
+    } catch(e){ console.error('[dividaSelicChart]', e); setWarn('dividaSelicWarn', 'Falha ao montar o gráfico: ' + e.message, 'Failed to build the chart: ' + e.message); }
+  }
+
+  async function buildExpectativasChart(){
+    try {
+      const [exp, macro] = await Promise.all([
+        getJSON('./data/expectativas_anual_data.json'),
+        getJSON('./data/macro_data.json')
+      ]);
+      const expPontos = exp.expectativa_longo_prazo_mensal || [];
+      if(expPontos.length === 0){
+        setWarn('expectativasWarn', 'Sem dados em data/expectativas_anual_data.json (histórico vazio). Rode scripts/fetch_expectativas_anual.py e recarregue a página.', 'No data in data/expectativas_anual_data.json (empty history). Run scripts/fetch_expectativas_anual.py and reload the page.');
+        return;
+      }
+      const isoDatas = expPontos.map(p => p.data);
+      const expectativa = expPontos.map((p, i) => ({ x: isoDatas[i], y: p.mediana }));
+      const horizontePorData = new Map(expPontos.map(p => [p.data, p.ano_alvo]));
+
+      const selicPoints = toPoints(macro.series.selic_meta_mensal);
+      const selicMensal = selicPorMes(isoDatas, selicPoints);
+      const selic = isoDatas.map((d, i) => ({ x: d, y: selicMensal[i] }));
+      if(selicPoints.length === 0){
+        setWarn('expectativasWarn', 'Meta Selic não veio em data/macro_data.json (série 432 vazia) — o gráfico segue sem essa linha até o próximo fetch bem-sucedido.', 'The Selic target rate did not come through in data/macro_data.json (series 432 empty) — the chart continues without that line until the next successful fetch.');
+      }
+
+      window.__expectativasChart = new Chart(document.getElementById('expectativasChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          datasets: [
+            { label: 'Expectativa IPCA — maior horizonte Focus', data: expectativa, borderColor: COLORS.blue, backgroundColor: COLORS.blueSoft,
+              borderWidth: 2.2, pointRadius: 0, pointHoverRadius: 4, fill: true, tension: 0.2, yAxisID: 'y' },
+            { label: 'Meta Selic', data: selic, borderColor: COLORS.purple, backgroundColor: COLORS.purpleSoft,
+              borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: false, tension: 0.1, yAxisID: 'y1', spanGaps: true }
+          ]
+        },
+        options: Object.assign(dualAxisOptions(), {
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1E1834', borderColor: '#2A2444', borderWidth: 1,
+              titleColor: COLORS.white, bodyColor: COLORS.white, padding: 10,
+              titleFont: { family: 'Space Grotesk', size: 12 }, bodyFont: { family: 'JetBrains Mono', size: 11.5 },
+              filter: (item) => item.raw !== null && item.raw !== undefined,
+              callbacks: {
+                label: (ctx) => {
+                  if(ctx.raw === null || ctx.raw === undefined) return null;
+                  if(ctx.datasetIndex === 0){
+                    const ano = horizontePorData.get(ctx.raw.x);
+                    return `${ctx.dataset.label} (${ano}): ${ctx.raw.y.toFixed(2)}%`;
+                  }
+                  return `${ctx.dataset.label}: ${ctx.raw.y.toFixed(2)}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { type: 'time', time: { unit: 'year', tooltipFormat: 'MMM/yyyy' },
+              grid: { color: COLORS.grid }, ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 } } },
+            y: { position: 'left', grid: { color: COLORS.grid },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } },
+            y1: { position: 'right', grid: { drawOnChartArea: false },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } }
+          }
+        })
+      });
+    } catch(e){ console.error('[expectativasChart]', e); setWarn('expectativasWarn', 'Falha ao montar o gráfico: ' + e.message, 'Failed to build the chart: ' + e.message); }
+  }
+
+  const PALETA_ANOS = ['#6FD3FF', '#9B87F5', '#F5A87A', '#7AF5B0', '#F57AC0', '#E8D96F'];
+
+  async function buildRevisaoChart(){
+    try {
+      const exp = await getJSON('./data/expectativas_anual_data.json');
+      const historico = exp.historico_por_ano || {};
+      const anoAtual = new Date().getFullYear();
+
+      // Mostra o ano corrente +/- 2 (5 anos-alvo) por padrão -- clutter
+      // controlado e sempre "acompanha" a data de hoje, sem precisar editar
+      // isso conforme os anos passam.
+      const anosAlvo = Object.keys(historico)
+        .map(Number)
+        .filter(a => a >= anoAtual - 2 && a <= anoAtual + 2 && (historico[a] || []).length > 0)
+        .sort((a, b) => a - b);
+
+      if(anosAlvo.length === 0){
+        setWarn('revisaoWarn', 'Sem dados em data/expectativas_anual_data.json (histórico vazio). Rode scripts/fetch_expectativas_anual.py e recarregue a página.', 'No data in data/expectativas_anual_data.json (empty history). Run scripts/fetch_expectativas_anual.py and reload the page.');
+        return;
+      }
+
+      const datasets = anosAlvo.map((ano, i) => {
+        const registros = historico[ano] || historico[String(ano)] || [];
+        return {
+          label: `IPCA ${ano}`,
+          data: registros.map(r => ({ x: r.data_pesquisa, y: r.mediana })),
+          borderColor: PALETA_ANOS[i % PALETA_ANOS.length],
+          backgroundColor: 'transparent',
+          borderWidth: 2, pointRadius: 0, pointHoverRadius: 4,
+          fill: false, tension: 0.15, spanGaps: true
+        };
+      });
+
+      window.__revisaoChart = new Chart(document.getElementById('revisaoChart').getContext('2d'), {
+        type: 'line',
+        data: { datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'nearest', intersect: false },
+          plugins: {
+            legend: { display: true, labels: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 11 } } },
+            tooltip: {
+              backgroundColor: '#1E1834', borderColor: '#2A2444', borderWidth: 1,
+              titleColor: COLORS.white, bodyColor: COLORS.white, padding: 10,
+              titleFont: { family: 'Space Grotesk', size: 12 }, bodyFont: { family: 'JetBrains Mono', size: 11.5 },
+              callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}%` }
+            }
+          },
+          scales: {
+            x: { type: 'time', time: { unit: 'month', tooltipFormat: 'MMM/yyyy' },
+              grid: { color: COLORS.grid }, ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 } } },
+            y: { grid: { color: COLORS.grid },
+              ticks: { color: COLORS.white, font: { family: 'JetBrains Mono', size: 10.5 }, callback: v => v + '%' } }
+          }
+        }
+      });
+    } catch(e){ console.error('[revisaoChart]', e); setWarn('revisaoWarn', 'Falha ao montar o gráfico: ' + e.message, 'Failed to build the chart: ' + e.message); }
+  }
+
+  buildInflSelicChart();
+  buildDividaSelicChart();
+  buildExpectativasChart();
+  buildRevisaoChart();
+})();
+
+// ============================================================
+// Alternância de idioma (PT-BR / EN)
+// ============================================================
+(function(){
+  window.__LANG = 'pt';
+
+  const EXACT_LABEL_MAP = {
+    'Teto da meta': 'Target ceiling',
+    'Piso da meta': 'Target floor',
+    'Centro da meta': 'Target center',
+    'IPCA anual (%)': 'Annual CPI (%)',
+    'IPCA acum. 12m': '12-month CPI (IPCA)',
+    'Meta Selic': 'Selic target rate',
+    'Expectativa IPCA — maior horizonte Focus': 'CPI (IPCA) expectation — longest Focus horizon',
+    'Dívida Bruta do Governo Geral (% do PIB)': 'General Government Gross Debt (% of GDP)',
+    'Dívida Bruta do Governo Geral (R$ milhões)': 'General Government Gross Debt (R$ millions)'
+  };
+
+  function translateLabel(label, lang){
+    if(!label) return label;
+    if(lang === 'en'){
+      if(EXACT_LABEL_MAP[label]) return EXACT_LABEL_MAP[label];
+      if(label.indexOf('IPCA ') === 0) return 'CPI ' + label.slice(5);
+      return label;
+    }
+    for(const k in EXACT_LABEL_MAP){ if(EXACT_LABEL_MAP[k] === label) return k; }
+    if(label.indexOf('CPI ') === 0) return 'IPCA ' + label.slice(4);
+    return label;
+  }
+
+  function getCharts(){
+    return [
+      window.__ipcaPresChart,
+      window.__inflSelicChart,
+      window.__dividaChartRef ? window.__dividaChartRef() : null,
+      window.__expectativasChart,
+      window.__revisaoChart
+    ].filter(Boolean);
+  }
+
+  function applyChartLanguage(lang){
+    getCharts().forEach(ch => {
+      if(ch.data && ch.data.datasets){
+        ch.data.datasets.forEach(ds => { ds.label = translateLabel(ds.label, lang); });
+      }
+      const anns = ch.options && ch.options.plugins && ch.options.plugins.annotation
+        ? ch.options.plugins.annotation.annotations : null;
+      if(anns){
+        if(anns.planoReal && anns.planoReal.label) anns.planoReal.label.content = lang === 'en' ? 'Real Plan' : 'Plano Real';
+        if(anns.lc179 && anns.lc179.label) anns.lc179.label.content = lang === 'en' ? 'LC 179 — autonomy' : 'LC 179 — autonomia';
+      }
+      ch.update();
+    });
+  }
+
+  const TITLE_PT = 'A Última Fronteira da Independência do Banco Central — Lucas Brito';
+  const TITLE_EN = 'The Last Frontier of Central Bank Independence — Lucas Brito';
+
+  function setLanguage(lang){
+    window.__LANG = lang;
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      if(el.dataset.pt === undefined) el.dataset.pt = el.innerHTML;
+      el.innerHTML = lang === 'en' ? el.dataset.en : el.dataset.pt;
+    });
+
+    document.documentElement.lang = lang === 'en' ? 'en' : 'pt-BR';
+    document.getElementById('pageTitle').textContent = lang === 'en' ? TITLE_EN : TITLE_PT;
+    document.getElementById('langToggleLabel').textContent = lang === 'en' ? 'Português' : 'English';
+
+    if(window.renderPresTable) window.renderPresTable(lang);
+
+    // reaplica o rótulo do botão "ver lista de presidentes", preservando estado aberto/fechado
+    const toggleBtn = document.getElementById('togglePresTable');
+    const wrap = document.getElementById('presTableWrap');
+    if(toggleBtn && wrap){
+      const isOpen = wrap.style.display !== 'none';
+      toggleBtn.textContent = isOpen
+        ? toggleBtn.dataset[lang === 'en' ? 'enLabelOpen' : 'ptLabelOpen']
+        : toggleBtn.dataset[lang === 'en' ? 'enLabel' : 'ptLabel'];
+    }
+
+    if(window.__refreshWarnings) window.__refreshWarnings(lang);
+    applyChartLanguage(lang);
+  }
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    setLanguage(window.__LANG === 'en' ? 'pt' : 'en');
+  });
+})();
+</script>
+</body>
+</html>
