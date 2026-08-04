@@ -1,4 +1,17 @@
-# Autonomia Financeira do BACEN — Página de Divulgação
+# A Última Fronteira da Independência do Banco Central
+
+Página de divulgação interativa (HTML estático) que ilustra, com gráficos e
+linha do tempo, os principais pontos do ensaio "The Last Frontier of Central
+Bank Independence", escrito por Mario Serpa.
+
+⚠️ Este site não é conteúdo original — é um material de apoio visual criado
+por Lucas Brito para ilustrar, em parte, os dados discutidos no artigo do
+autor. Para ler o ensaio completo, acesse o link no site ou o Substack
+original de Mario Serpa.
+
+Traz gráficos interativos (IPCA, Selic, Dívida Bruta, expectativas do Focus)
+construídos com dados públicos do Banco Central (SGS/BCB) e IBGE, e permite
+alternar entre português e inglês.
 
 Página estática (index.html) no mesmo padrão visual do Painel Macro CIEM
 (fundo escuro, roxo/azul claro, Space Grotesk + Inter + JetBrains Mono).
